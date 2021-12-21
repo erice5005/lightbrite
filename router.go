@@ -50,7 +50,6 @@ func NewRouter(targetIP net.IP, targetPort int) *Router {
 func (r *Router) Run() {
 	go func() {
 		for msg := range r.WriteStream {
-			log.Printf("Writing: %v\n", string(msg.Content.(PilotRequest).toJSON()))
 			_, err := r.Conn.Write(msg.Content.(PilotRequest).toJSON())
 			if err != nil {
 				log.Printf("write err: %v\n", err)

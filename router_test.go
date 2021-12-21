@@ -47,3 +47,25 @@ func Test_GetPilot(t *testing.T) {
 		log.Printf("Val: %v\n", val)
 	}
 }
+
+func Test_TurnOff(t *testing.T) {
+	rx := NewRouter(net.ParseIP("192.168.0.105"), 38899)
+	if rx == nil {
+		t.FailNow()
+	}
+	go rx.Run()
+
+	initReq := PilotRequest{
+		Method: "setPilot",
+		Params: PilotParams{
+			"state": true,
+		},
+	}
+	rx.WriteStream <- RouterFrame{
+		Content: initReq,
+	}
+	select {
+	case val := <-rx.ReadStream:
+		log.Printf("Val: %v\n", val)
+	}
+}
